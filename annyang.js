@@ -63,6 +63,7 @@
   // This method receives an array of callbacks to iterate over, and invokes each of them
   var invokeCallbacks = function(callbacks) {
     callbacks.forEach(function(callback) {
+      console.log(callback);
       callback.callback.apply(callback.context);
     });
   };
@@ -170,14 +171,16 @@
           }
           return false;
         }
-
+        var isACommand = false;
         invokeCallbacks(callbacks.result);
         var results = event.results[event.resultIndex];
+        //console.log(results)
         var commandText;
         // go over each of the 5 results and alternative results received (we've set maxAlternatives to 5 above)
         for (var i = 0; i<results.length; i++) {
           // the text recognized
           commandText = results[i].transcript.trim();
+          console.log("ssfsf"+commandText);
           if (debugState) {
             root.console.log('Speech recognized: %c'+commandText, debugStyle);
           }
@@ -185,7 +188,9 @@
           // try and match recognized text to one of the commands on the list
           for (var j = 0, l = commandsList.length; j < l; j++) {
             var result = commandsList[j].command.exec(commandText);
+            console.log(result);
             if (result) {
+              isACommand = true;
               var parameters = result.slice(1);
               if (debugState) {
                 root.console.log('command matched: %c'+commandsList[j].originalPhrase, debugStyle);
@@ -200,6 +205,9 @@
             }
           }
         }
+        /*if(!isACommand){
+          alert("UNRECOGNIZED COMMAND!!");
+        }*/
         invokeCallbacks(callbacks.resultNoMatch);
         return false;
       };
@@ -338,17 +346,26 @@
           command;
 
       initIfNeeded();
-
+      console.log(commands);
       for (var phrase in commands) {
         if (commands.hasOwnProperty(phrase)) {
+          
           cb = root[commands[phrase]] || commands[phrase];
-          if (typeof cb !== 'function') {
+          if(cb==='rubbish'){
+            console.log("sdsdsdsds");
+          }
+          else if (typeof cb !== 'function') {
+
             continue;
           }
           //convert command to regex
           command = commandToRegExp(phrase);
 
           commandsList.push({ command: command, callback: cb, originalPhrase: phrase });
+        }
+        else{
+         console.log("here");
+          alert(phrase);
         }
       }
       if (debugState) {
@@ -393,7 +410,9 @@
         return true;
       });
     },
-
+    /* addCallback('resultNoMatch', function () {
+           $('.myErrorText').text('Unrecognized command!');
+         },this);*/
     /**
      * Add a callback function to be called in case one of the following events happens:
      *
