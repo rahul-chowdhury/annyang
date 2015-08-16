@@ -20,6 +20,7 @@
     "package.json",
     "bower.json",
     "demo",
+    "jarvis",
     "sites"
   ]
 }
