@@ -40,7 +40,7 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ['annyang.js', 'sites/facebook.js', 'sites/geektime.js', 'demo/css/main.css', '!**/node_modules/**'],
+      files: ['annyang.js', 'sites/facebook.js', 'sites/geektime.js',/* 'demo/css/main.css', */'jarvis/css/main.css','!**/node_modules/**'],
       tasks: ['default'],
     },
     uglify: {
@@ -61,16 +61,19 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,                   // Enable dynamic expansion
-          cwd: 'demo/images',             // Src matches are relative to this path
+          //cwd: 'demo/images', 
+          cwd: 'jarvis/images',            // Src matches are relative to this path
           src: ['*.{png,jpg,gif}'],       // Actual patterns to match
-          dest: 'demo/images'             // Destination path prefix
+          //dest: 'demo/images'   
+          dest: 'jarvis/images'            // Destination path prefix
         }]
       },
     },
     cssmin: {
       combine: {
         files: {
-          'demo/css/main.min.css': ['demo/css/main.css', 'demo/vendor/css/default.css', 'demo/vendor/css/github.css']
+         // 'demo/css/main.min.css': ['demo/css/main.css', 'demo/vendor/css/default.css', 'demo/vendor/css/github.css']
+         'jarvis/css/main.min.css': ['jarvis/css/main.css', 'jarvis/vendor/css/default.css', 'jarvis/vendor/css/github.css']
         }
       }
     },
@@ -85,10 +88,12 @@ module.exports = function(grunt) {
       server: {
         options: {
           protocol: 'https',
-          port: 8443,
+          //port: 8443,
+          port:8000,
           hostname: '*',
           base: '.',
-          open: 'https://localhost:8443/demo'
+          //open: 'https://localhost:8443/demo'
+          open: 'https://localhost:8000/jarvis'
         }
       }
     }
